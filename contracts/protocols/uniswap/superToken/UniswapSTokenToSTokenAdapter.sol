@@ -17,10 +17,12 @@ contract UniswapSTokenToSTokenAdapter is Receiver, ReverseENS {
 
     IUniswapV2Factory public immutable uniswapFactory;
     ISuperToken private immutable outputToken;
+    ERC20 public immutable outputUnderlyingToken;
 
     constructor(IUniswapV2Router01 _uniswapRouter, ISuperToken _outputToken) public {
         uniswapFactory = _uniswapRouter.factory();
         outputToken = _outputToken;
+        outputUnderlyingToken = ERC20(_outputToken.getUnderlyingToken());
     }
 
     /**
@@ -37,8 +39,7 @@ contract UniswapSTokenToSTokenAdapter is Receiver, ReverseENS {
     ) internal override {
         ISuperToken superToken = ISuperToken(address(_token));
         ERC20 unwrappedInput = ERC20(superToken.getUnderlyingToken());
-        ERC20 outputUnderlyingToken = ERC20(outputToken.getUnderlyingToken());
-
+        
         superToken.downgrade(amount);
 
         uint256 outputAmount =
