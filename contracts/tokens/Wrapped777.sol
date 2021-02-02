@@ -187,7 +187,7 @@ contract Wrapped777 is ERC777WithGranularity, Receiver, IWrapped777, IERC3126 {
     if (address(Wrapped777(oldWrapper).token()) != address(token)) {
       revert("INVALID");
     }
-
+ 
     uint256 startingBalance = token.balanceOf(address(this));
 
     TransferHelper.safeTransfer(oldWrapper, oldWrapper, amount);
